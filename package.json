@@ -1,0 +1,44 @@
+{
+    "name": "avito-tech-assignment-winter-2025",
+    "private": true,
+    "type": "module",
+    "version": "0.0.0",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/alexborzov/avito-tech-assignment-winter-2025.git"
+    },
+    "scripts": {
+        "build": "lerna run build",
+        "build:clean": "lerna run build:clean",
+        "changesets": "changeset",
+        "check-types": "lerna run check-types",
+        "ci:release": "changeset publish",
+        "ci:version": "changeset version",
+        "clean": "yarn build:clean && yarn clean:all && yarn clean:cache",
+        "clean:cache": "yarn cache clean --all && rm -rf .yarn/cache .yarn/__virtual__ .yarn/berry ./.pnp.cjs ./.pnp.loader.mjs .yarn node_modules yarn.lock",
+        "lint": "lerna run --ignore @demonicattack/typescript lint",
+        "lint:fix": "lerna run --ignore @demonicattack/typescript lint:fix",
+        "lint:ws": "yarn dlx sherif@latest -r packages-without-package-json",
+        "prepare": "husky",
+        "clean:all": "lerna run clean:all",
+        "format:write": "biome format --write",
+        "lint:write": "biome lint --write",
+        "check:write": "biome check --write"
+    },
+    "packageManager": "yarn@4.6.0",
+    "engines": {
+        "node": ">=20.18.2",
+        "yarn": ">=4.6.0"
+    },
+    "devDependencies": {
+        "@alex/ts": "workspace:^",
+        "@biomejs/biome": "1.9.4",
+        "lerna": "^8.1.9",
+        "nx": "^20.4.2",
+        "typescript": "^5.7.3"
+    }
+}

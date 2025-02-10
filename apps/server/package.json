@@ -1,0 +1,52 @@
+{
+    "name": "avito-tech-assignment-winter-2025-sever",
+    "type": "module",
+    "module": "dist/index.js",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "typings": "dist/index.d.ts",
+    "exports": {
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+    },
+    "scripts": {
+        "build": "yarn build:clean && yarn check-types && node esbuild.config.js",
+        "start": "yarn build && fastify start --ignore-watch='.ts$' -w -l info -P dist/index.js",
+        "tsup:watch": "tsup --watch",
+        "check-types": "tsc --noEmit",
+        "clean": "rimraf node_modules",
+        "clean:all": "rm -rf node_modules dist",
+        "test": "vitest",
+        "dev": "concurrently -k -p \"[{name}]\" -n \"TS,SERVER\" -c \"yellow.bold,cyan.bold\" \"yarn tsup:watch\" \"yarn dev:start --delay 2\"",
+        "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/index.js",
+        "start:watch": "bun --watch src/index.ts",
+        "build:clean": "rimraf dist",
+        "format:write": "biome format --write",
+        "lint:write": "biome lint --write",
+        "check:write": "biome check --write"
+    },
+    "dependencies": {
+        "@fastify/autoload": "^6.1.0",
+        "@fastify/cookie": "^11.0.2",
+        "@fastify/sensible": "^6.0.3",
+        "esbuild": "^0.25.0",
+        "fastify": "^5.2.1",
+        "fastify-plugin": "^5.0.1",
+        "oxc-transform": "^0.48.2",
+        "rimraf": "^6.0.1"
+    },
+    "devDependencies": {
+        "@alex/ts": "workspace:^",
+        "@biomejs/biome": "^1.9.4",
+        "@types/node": "^22.13.1",
+        "concurrently": "^9.1.2",
+        "fastify-type-provider-zod": "^4.0.2",
+        "typescript": "^5.7.3",
+        "zod": "^3.24.1"
+    },
+    "packageManager": "yarn@4.6.0",
+    "engines": {
+        "node": ">=20.18.2",
+        "yarn": ">=4.6.0"
+    }
+}

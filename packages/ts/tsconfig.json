@@ -1,0 +1,10 @@
+{
+    "extends": "./src/typescript.base.json",
+    "compilerOptions": {
+        "declaration": true,
+        "outDir": "./dist",
+        "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+    },
+    "exclude": ["node_modules", "dist"],
+    "include": ["src"]
+}

@@ -1,0 +1,10 @@
+{
+    "extends": "@alex/ts/fastify",
+    "compilerOptions": {
+        "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+        "declaration": true,
+        "outDir": "dist"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
+}
