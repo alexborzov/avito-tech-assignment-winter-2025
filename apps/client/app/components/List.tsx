@@ -43,7 +43,7 @@ const Notification = ({ name, description, image, color, workSchedule, to }: Ite
 }
 
 const List = () => {
-    const { data: items, error, isLoading } = useGetItems();
+    const { data: items, error, isLoading } = useGetItems()
 
     if (isLoading) return <div>Loading...</div>
     if (error instanceof Error) return <div>Error: {error.message}</div>
@@ -54,7 +54,7 @@ const List = () => {
                 Список Объявлений
             </TextAnimate>
             <div className='relative flex h-[500px] w-full flex-col justify-start overflow-hidden p-2'>
-                <AnimatedList>
+                <AnimatedList delay={500}>
                     {items?.data?.map((item, idx) => (
                         <Notification to={`/item/${item.id}`} color='#00C9A7' {...item} key={idx} />
                     ))}

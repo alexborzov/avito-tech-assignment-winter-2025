@@ -1,4 +1,4 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, Link } from '@remix-run/react'
 import type { LinksFunction } from '@remix-run/node'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react'
@@ -29,6 +29,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Links />
             </head>
             <body>
+                <div className='flex w-full p-4 font-bold'>
+                    <Link to='/'>
+                        <Button className='font-bold' variant={'link'}>
+                            Avito Tech
+                        </Button>
+                    </Link>
+                </div>
                 {children}
                 <ScrollRestoration />
                 <Scripts />

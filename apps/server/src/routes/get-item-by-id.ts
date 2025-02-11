@@ -2,11 +2,11 @@ import type { FastifyPluginAsync } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { items } from '../storage/items.ts'
 import { itemsSchema, paramsSchema } from '../schema/items.ts'
-import { z } from 'zod';
+import { z } from 'zod'
 
 const errorSchema = z.object({
-  error: z.string(),
-});
+    error: z.string(),
+})
 
 // const responseSchema = z.union([itemsSchema, errorSchema]);
 
@@ -16,8 +16,8 @@ const getItemById: FastifyPluginAsync = async (fastify): Promise<void> => {
         url: '/items/:id',
         schema: {
             response: {
-              200: itemsSchema,
-              404: errorSchema,
+                200: itemsSchema,
+                404: errorSchema,
             },
             params: paramsSchema,
         },

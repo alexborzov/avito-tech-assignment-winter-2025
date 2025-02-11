@@ -19,7 +19,7 @@ const ItemId = () => {
     const { dehydratedState, params } = useLoaderData<typeof loader>()
     return (
         <HydrationBoundary state={dehydratedState}>
-            <ListId params={params}/>
+            <ListId params={params} />
         </HydrationBoundary>
     )
 }

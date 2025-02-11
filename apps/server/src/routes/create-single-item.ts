@@ -34,13 +34,16 @@ const createSingleItem: FastifyPluginAsync = async (fastify): Promise<void> => {
                     return reply.code(400).send({ error: 'Invalid type' })
             }
 
-            const item = Object.assign({
-              id: itemsIdCounter(),
-              name,
-              description,
-              location,
-              type,
-          }, rest);
+            const item = Object.assign(
+                {
+                    id: itemsIdCounter(),
+                    name,
+                    description,
+                    location,
+                    type,
+                },
+                rest,
+            )
 
             items.push(item)
 
