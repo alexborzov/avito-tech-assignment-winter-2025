@@ -1,5 +1,5 @@
 {
-    "extends": "@alex/ts/fastify",
+    "extends": "./typescript.fastify.json",
     "compilerOptions": {
         "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
         "declaration": true,

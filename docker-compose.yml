@@ -1,0 +1,11 @@
+services:
+  fastify-app:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    working_dir: /app/apps/server
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: always

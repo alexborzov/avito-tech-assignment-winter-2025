@@ -8,11 +8,6 @@ const sensible: FastifyPluginAsync = async (fastify): Promise<void> => {
         async handler() {
             throw fastify.httpErrors.notFound()
         },
-        schema: {
-            response: {
-                '404': { $ref: 'HttpError' },
-            },
-        },
     })
 }
 

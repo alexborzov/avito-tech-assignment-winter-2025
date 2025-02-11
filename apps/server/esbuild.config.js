@@ -1,5 +1,5 @@
 // @ts-check
-import { mkdir, writeFile, copyFile, readFile } from 'node:fs/promises'
+import { mkdir, writeFile, readFile } from 'node:fs/promises'
 import { isolatedDeclaration } from 'oxc-transform'
 import * as path from 'node:path'
 import * as esbuild from 'esbuild'
@@ -36,13 +36,13 @@ const build = async () => {
     const pkg = JSON.parse(await readFile(new URL('./package.json', import.meta.url), 'utf-8'))
     try {
         await esbuild.build({
-            entryPoints: ['src/index.ts'],
+            entryPoints: ['src/index.ts', 'src/routes/**/*.ts', 'src/plugins/**/*.ts'],
             outdir: 'dist',
             bundle: true,
             format: 'esm',
             platform: 'node',
             target: 'esnext',
-            minify: true,
+            minify: false,
             sourcemap: true,
             external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
             tsconfig: 'tsconfig.json',

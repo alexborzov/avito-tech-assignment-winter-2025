@@ -11,29 +11,32 @@ const options: AppOptions = {}
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const Bootstrap: FastifyPluginAsync<AppOptions> = async (fastify, _options): Promise<void> => {
+const Bootstrap: FastifyPluginAsync = async (fastify, _options) => {
     try {
         fastify.setValidatorCompiler(validatorCompiler)
+
         fastify.setSerializerCompiler(serializerCompiler)
+
+        console.log('💠 Registering plugins...')
         await fastify.register(AutoLoad, {
             dir: join(__dirname, 'plugins'),
             forceESM: true,
-            ignorePattern: /^.*(?:test|spec).ts$/,
-            ignoreFilter: path => path.endsWith('.spec.ts'),
-            encapsulate: false,
             ..._options,
         })
-        fastify.register(AutoLoad, {
+
+        console.log('🔀 Registering routes...')
+        await fastify.register(AutoLoad, {
             dir: join(__dirname, 'routes'),
             forceESM: true,
-            ignorePattern: /^.*(?:test|spec).ts$/,
-            ignoreFilter: path => path.endsWith('.spec.ts'),
             ..._options,
         })
-        fastify.ready()
+
+        fastify.log.info(`🚀 Server listening on 3000`)
+
+        fastify.log.info(`📄 Documentation running at http://localhost:3000/documentation`)
     } catch (error) {
         if (error instanceof Error) {
-            Error(error.message)
+            fastify.log.error(error)
             process.exit(1)
         }
     }

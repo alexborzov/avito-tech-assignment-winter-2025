@@ -5,8 +5,8 @@ const root: FastifyPluginAsync = async (fastify): Promise<void> => {
     fastify.withTypeProvider<ZodTypeProvider>().route({
         method: 'GET',
         url: '/',
-        async handler(request, response) {
-            response.send('Hello from Fastify!')
+        async handler() {
+            return 'avito-tech-assignment-winter-2025-server!🚀'
         },
     })
 }

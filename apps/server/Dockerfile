@@ -1,8 +1,18 @@
-FROM node:20
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-CMD ["node", "dist/index.js"]
+FROM node:20-alpine
+
+RUN corepack enable
+
+WORKDIR /app/apps/server
+
+COPY apps/server/package.json ./
+
+RUN yarn install
+
+COPY apps/server .
+
+RUN yarn build
+
 EXPOSE 3000
+
+CMD ["yarn", "start"]
+
