@@ -1559,6 +1559,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^2.8.8":
+  version: 2.9.11
+  resolution: "@hookform/resolvers@npm:2.9.11"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 10c0/b24049aa57e72547bd8b4d9b37c5088585306e2d9454ee23b5530621d07eabb8e90748f48b5bafb8299f1f95bac3863b9a2e0aabd540cd6380ebbd605f012283
+  languageName: node
+  linkType: hard
+
 "@hookform/resolvers@npm:^4.0.0":
   version: 4.0.0
   resolution: "@hookform/resolvers@npm:4.0.0"
@@ -4602,6 +4611,7 @@ __metadata:
     autoprefixer: "npm:^10.4.19"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
+    composable-functions: "npm:^4.5.0"
     isbot: "npm:^4.1.0"
     lucide-react: "npm:^0.475.0"
     motion: "npm:^12.4.2"
@@ -4610,13 +4620,14 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.54.2"
+    remix-forms: "npm:^3.0.0"
     tailwind-merge: "npm:^3.0.1"
     tailwindcss: "npm:^3.4.4"
     tailwindcss-animate: "npm:^1.0.7"
     typescript: "npm:^5.1.6"
     vite: "npm:^5.1.0"
     vite-tsconfig-paths: "npm:^4.2.1"
-    zod: "npm:^3.24.1"
+    zod: "npm:^3.24.2"
   languageName: unknown
   linkType: soft
 
@@ -5315,6 +5326,13 @@ __metadata:
   version: 6.1.1
   resolution: "compare-versions@npm:6.1.1"
   checksum: 10c0/415205c7627f9e4f358f571266422980c9fe2d99086be0c9a48008ef7c771f32b0fbe8e97a441ffedc3910872f917a0675fe0fe3c3b6d331cda6d8690be06338
+  languageName: node
+  linkType: hard
+
+"composable-functions@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "composable-functions@npm:4.5.0"
+  checksum: 10c0/7ba9de8a225e4a806675066c64274b70cf9ad294796be731228682c165bb9a77e451245538ea2690ce525c7dac314eae3f955efbf9a5e1da07a3546d4a57038b
   languageName: node
   linkType: hard
 
@@ -12548,6 +12566,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"remix-forms@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "remix-forms@npm:3.0.0"
+  dependencies:
+    "@hookform/resolvers": "npm:^2.8.8"
+  peerDependencies:
+    composable-functions: ">=4"
+    react: ">=16.8"
+    react-hook-form: ">=7.27"
+    react-router: ">=7"
+    zod: ">=3.12"
+  checksum: 10c0/9584b885033314a27122f086b4fa47296d6491af62c413127bf319b1291803321f6608e99573140032b377b4e9a24beacf291f9b98aec3507fd9496d15d97916
+  languageName: node
+  linkType: hard
+
 "require-directory@npm:^2.1.1":
   version: 2.1.1
   resolution: "require-directory@npm:2.1.1"
@@ -15219,6 +15252,13 @@ __metadata:
   version: 3.24.1
   resolution: "zod@npm:3.24.1"
   checksum: 10c0/0223d21dbaa15d8928fe0da3b54696391d8e3e1e2d0283a1a070b5980a1dbba945ce631c2d1eccc088fdbad0f2dfa40155590bf83732d3ac4fcca2cc9237591b
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.24.2":
+  version: 3.24.2
+  resolution: "zod@npm:3.24.2"
+  checksum: 10c0/c638c7220150847f13ad90635b3e7d0321b36cce36f3fc6050ed960689594c949c326dfe2c6fa87c14b126ee5d370ccdebd6efb304f41ef5557a4aaca2824565
   languageName: node
   linkType: hard
 

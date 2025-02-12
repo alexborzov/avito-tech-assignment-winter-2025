@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <div className='flex w-full p-4 font-bold'>
                     <Link to='/'>
                         <Button className='font-bold' variant={'link'}>
-                            Avito Tech
+                            avito.tech
                         </Button>
                     </Link>
                 </div>

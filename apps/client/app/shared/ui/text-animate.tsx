@@ -2,7 +2,7 @@
 
 import { cn } from '~/lib/utils'
 import { AnimatePresence, motion, type MotionProps, type Variants } from 'motion/react'
-import { type ElementType } from 'react'
+import type { ElementType } from 'react'
 
 type AnimationType = 'text' | 'word' | 'character' | 'line'
 type AnimationVariant =

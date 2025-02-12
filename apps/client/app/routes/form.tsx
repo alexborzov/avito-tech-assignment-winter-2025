@@ -7,6 +7,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { json, redirect } from '@remix-run/node'
 import { ItemsType, usePostItems } from '~/shared/api'
 import { useMemo, useEffect } from 'react'
+import { applySchema } from 'composable-functions'
+import { formAction, SchemaForm, zodEffects } from 'remix-forms'
+
 import {
     TextAnimate,
     Select,
@@ -49,87 +52,91 @@ const categorySchemas = {
     }),
 }
 
-type TFormData = z.infer<typeof baseSchema> &
-    (
-        | z.infer<(typeof categorySchemas)['Недвижимость']>
-        | z.infer<(typeof categorySchemas)['Авто']>
-        | z.infer<(typeof categorySchemas)['Услуги']>
-    )
+// const schema = z.discriminatedUnion('type', [
+//     baseSchema.extend(categorySchemas[ItemsType.Недвижимость].shape),
+//     baseSchema.extend(categorySchemas[ItemsType.Авто].shape),
+//     baseSchema.extend(categorySchemas[ItemsType.Услуги].shape),
+// ])
 
-const resolver = zodResolver(
-    baseSchema.merge(
-        z.union([
-            categorySchemas[ItemsType.Недвижимость] || z.object({}),
-            categorySchemas[ItemsType.Авто] || z.object({}),
-            categorySchemas[ItemsType.Услуги] || z.object({}),
-        ]) as any,
-    ),
+const schema = z.lazy(() =>
+  z.discriminatedUnion('type', [
+    baseSchema.extend(categorySchemas[ItemsType.Недвижимость].shape),
+    baseSchema.extend(categorySchemas[ItemsType.Авто].shape),
+    baseSchema.extend(categorySchemas[ItemsType.Услуги].shape),
+  ])
 )
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-    const formData = await request.formData()
-    const rawData = Object.fromEntries(formData)
+type TFormData = z.infer<typeof schema>
 
-    try {
-        const baseValidated = baseSchema.safeParse(rawData)
-        if (!baseValidated.success) {
-            return json({ errors: baseValidated.error.flatten().fieldErrors }, { status: 400 })
-        }
+const resolver = zodResolver(schema)
 
-        const categorySchema = categorySchemas[baseValidated.data.type] || z.object({})
-        const categoryValidated = categorySchema.safeParse(rawData)
+const mutation = applySchema(schema)(async (values) => (
+    await axios.post('http://localhost:3000/items', values)
+))
 
-        if (!categoryValidated.success) {
-            return json({ errors: categoryValidated.error.flatten().fieldErrors }, { status: 400 })
-        }
-
-        const newItem = { ...baseValidated.data, ...categoryValidated.data, id: crypto.randomUUID() }
-
-        const response = await axios.post('http://localhost:3000/items', newItem)
-
-        if (response.status !== 200) return json({ error: 'Ошибка при отправке данных' }, { status: 400 })
-
-        return redirect('/')
-    } catch (error) {
-        return json({ error: 'Некорректные данные' }, { status: 400 })
-    }
-}
-
-export default function ItemForm() {
-  // const schema = baseSchema.merge(category ? categorySchemas[category] : z.object({}));
-  const postItemMutation = usePostItems();
-
-    const actionData = useActionData<typeof action>()
-
-    const [category, setCategory] = useState<ItemsType | ''>('')
-
-    const schema = useMemo(() => {
-      return baseSchema.merge(category ? categorySchemas[category] : z.object({}))
-  }, [category])
-
-    const [resolver, setResolver] = useState(() => zodResolver(schema))
-
-
-    useEffect(() => {
-        setResolver(() => zodResolver(baseSchema.merge(category ? categorySchemas[category] : z.object({}))));
-    }, [category]);
-
-
-
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm<TFormData>({
-        mode: 'onSubmit',
-        resolver,
+export const action = async ({ request }: Route.ActionArgs) =>
+    formAction({
+        request,
+        schema,
+        mutation,
+        successPath: '/list',
     })
 
-    // useEffect(() => reset(), [category])
+// export const action = async ({ request }: ActionFunctionArgs) => {
+//     const formData = await request.formData()
+//     const rawData = Object.fromEntries(formData.entries())
+
+//     try {
+//         const baseValidated = baseSchema.safeParse(rawData)
+//         if (!baseValidated.success) {
+//             return json({ errors: baseValidated.error.flatten().fieldErrors }, { status: 400 })
+//         }
+
+//         const categorySchema = categorySchemas[baseValidated.data.type] || z.object({})
+//         const categoryValidated = categorySchema.safeParse(rawData)
+
+//         if (!categoryValidated.success) {
+//             return json({ errors: categoryValidated.error.flatten().fieldErrors }, { status: 400 })
+//         }
+
+//         const newItem = { ...baseValidated.data, ...categoryValidated.data, id: crypto.randomUUID() }
+
+//         const response = await axios.post('http://localhost:3000/items', newItem)
+
+//         if (response.status !== 200) return json({ error: 'Ошибка при отправке данных' }, { status: 400 })
+
+//         return redirect('/')
+//     } catch (error) {
+//         return json({ error: 'Некорректные данные' }, { status: 400 })
+//     }
+// }
+export default function FormRoute() {
+    return <SchemaForm schema={zodEffects(schema)} />
+}
+
+// export default function ItemForm() {
+    // const schema = baseSchema.merge(category ? categorySchemas[category] : z.object({}));
+    // const actionData = useActionData<typeof action>()
+    // const postItemMutation = usePostItems()
+
+    // const [category, setCategory] = useState<ItemsType | ''>('')
+
+    // const schema = useMemo(() => {
+    //     return baseSchema.merge(category ? categorySchemas[category] : z.object({}))
+    // }, [category])
+
+    // const {
+    //     register,
+    //     handleSubmit,
+    //     formState: { errors },
+    // } = useForm<TFormData>({ mode: 'onSubmit', resolver: zodResolver(schema) })
+
+    // const onSubmit = (data: TFormData) => {
+    //     postItemMutation.mutate(data)
+    // }
 
     // @ts-ignore
-    const onSubmit = (data: TFormData) => postItemMutation.mutate(data)
+    // const onSubmit = (data: TFormData) => postItemMutation.mutate(data)
 
     // return (
     //     <div className='p-4 max-w-md mx-auto'>
@@ -187,42 +194,53 @@ export default function ItemForm() {
     //         </Form>
     //     </div>
     // )
-    return (
-      <div className='p-4 max-w-md mx-auto'>
-          <h2 className='text-xl font-bold mb-4'>Создать объявление</h2>
-          {actionData?.error && <p className='text-red-500'>{actionData.error}</p>}
-          <Form method='post' className='space-y-3' onSubmit={handleSubmit(onSubmit)}>
-              <input {...register('name')} placeholder='Название' className='border p-2 w-full rounded' />
-              {errors.name && <p className='text-red-500'>{errors.name.message}</p>}
+//     return (
+//         <div className='p-4 max-w-md mx-auto'>
+//             <h2 className='text-xl font-bold mb-4'>Создать объявление</h2>
+//             {actionData?.error && <p className='text-red-500'>{actionData.error}</p>}
+//             <Form method='post' className='space-y-3' onSubmit={handleSubmit(onSubmit)}>
+//                 <input {...register('name')} placeholder='Название' className='border p-2 w-full rounded' />
+//                 {errors.name && <p className='text-red-500'>{errors.name.message}</p>}
 
-              <textarea {...register('description')} placeholder='Описание' className='border p-2 w-full rounded' />
-              {errors.description && <p className='text-red-500'>{errors.description.message}</p>}
+//                 <textarea {...register('description')} placeholder='Описание' className='border p-2 w-full rounded' />
+//                 {errors.description && <p className='text-red-500'>{errors.description.message}</p>}
 
-              <input {...register('location')} placeholder='Локация' className='border p-2 w-full rounded' />
-              {errors.location && <p className='text-red-500'>{errors.location.message}</p>}
+//                 <input {...register('location')} placeholder='Локация' className='border p-2 w-full rounded' />
+//                 {errors.location && <p className='text-red-500'>{errors.location.message}</p>}
 
-              <select {...register('type')} className='border p-2 w-full rounded' onChange={e => setCategory(e.target.value as ItemsType)}>
-                  <option value=''>Выберите категорию</option>
-                  {Object.values(ItemsType).map(type => (
-                      <option key={type} value={type}>{type}</option>
-                  ))}
-              </select>
-              {errors.type && <p className='text-red-500'>{errors.type.message}</p>}
+//                 <select
+//                     {...register('type')}
+//                     className='border p-2 w-full rounded'
+//                     onChange={e => setCategory(e.target.value as ItemsType)}
+//                 >
+//                     <option value=''>Выберите категорию</option>
+//                     {Object.values(ItemsType).map(type => (
+//                         <option key={type} value={type}>
+//                             {type}
+//                         </option>
+//                     ))}
+//                 </select>
+//                 {errors.type && <p className='text-red-500'>{errors.type.message}</p>}
 
-              {category && Object.keys(categorySchemas[category].shape).map(field => (
-                  <div key={field}>
-                      <input {...register(field)} placeholder={field} className='border p-2 w-full rounded' />
-                      {errors[field] && <p className='text-red-500'>{errors[field]?.message as string}</p>}
-                  </div>
-              ))}
+//                 {category &&
+//                     Object.keys(categorySchemas[category].shape).map(field => (
+//                         <div key={field}>
+//                             <input {...register(field)} placeholder={field} className='border p-2 w-full rounded' />
+//                             {errors[field] && <p className='text-red-500'>{errors[field]?.message as string}</p>}
+//                         </div>
+//                     ))}
 
-              <button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded' disabled={postItemMutation.isPending}>
-                  {postItemMutation.isPending ? 'Отправка...' : 'Отправить'}
-              </button>
-          </Form>
-      </div>
-  );
-}
+//                 <button
+//                     type='submit'
+//                     className='bg-blue-500 text-white px-4 py-2 rounded'
+//                     disabled={postItemMutation.isPending}
+//                 >
+//                     {postItemMutation.isPending ? 'Отправка...' : 'Отправить'}
+//                 </button>
+//             </Form>
+//         </div>
+//     )
+// }
 
 // export async function action({ request }: ActionFunctionArgs) {
 //     const formData = await request.formData()
