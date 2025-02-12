@@ -2709,6 +2709,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-label@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "@radix-ui/react-label@npm:2.1.2"
+  dependencies:
+    "@radix-ui/react-primitive": "npm:2.0.2"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/c425ea25a67f60142645e6dd7669aa90bd9017e8d99c347736c9c19c44cea52e33224e4d086fd7e4945a7e9baa49335d42a5801d3bead884305515023e3ab31c
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-popper@npm:1.2.2":
   version: 1.2.2
   resolution: "@radix-ui/react-popper@npm:1.2.2"
@@ -3188,6 +3207,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remix-validated-form/with-zod@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@remix-validated-form/with-zod@npm:2.0.7"
+  peerDependencies:
+    remix-validated-form: ^4.x || ^5.x
+    zod: ">= 3.11.0"
+  checksum: 10c0/d76d35a203b358898d1c7ba55bcd8b1a39c1c01386b76a6d23b29aef6aa8d5467c37edcbdb32d9b856d5434605a83275acd8edaf791459aee12d3ea7f166f8cc
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-android-arm-eabi@npm:4.34.6":
   version: 4.34.6
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.34.6"
@@ -3318,6 +3347,60 @@ __metadata:
   version: 4.34.6
   resolution: "@rollup/rollup-win32-x64-msvc@npm:4.34.6"
   conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@rvf/core@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "@rvf/core@npm:7.0.2"
+  dependencies:
+    immer: "npm:^10.0.4"
+  peerDependencies:
+    "@rvf/set-get": ">= 6.0.3 < 8.0.0"
+    react: ^18.0.0 || ^19.0.0
+  checksum: 10c0/9c4a3ab5525b6f6bda3ad548f61b9e6f34e1212bc5dc0bfe645d2c890f23e1c4108581d445ea57dfa843f027d2e96dc0f24e7dd87f9f50bd414ed434ec6dac46
+  languageName: node
+  linkType: hard
+
+"@rvf/react-router@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "@rvf/react-router@npm:7.0.2"
+  dependencies:
+    "@rvf/react": "npm:*"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+    react-router: ^7.0.0
+  checksum: 10c0/7b4aaae503ba989894979388e7d855b724a524c4a91b85fe1c77ff918d268533e24a59fd279a16426a4a2f601a2b18253ed44c146a23876a5bc198bfbcf5d7b3
+  languageName: node
+  linkType: hard
+
+"@rvf/react@npm:*, @rvf/react@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "@rvf/react@npm:7.0.2"
+  peerDependencies:
+    "@rvf/core": ">= 6.1.2 < 8.0.0"
+    "@rvf/set-get": ">= 6.0.3 < 8.0.0"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  checksum: 10c0/f770bf8d6bb01592853201a4c10dfd85159efbcb7a5226c25a51ce371b1ad63288d20334536cf631addf4b168501a41c55c493643c101d6548d9e567b6bd1d63
+  languageName: node
+  linkType: hard
+
+"@rvf/set-get@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@rvf/set-get@npm:7.0.0"
+  checksum: 10c0/1a4f2878508f4088ba2910fe80316c3a75d79109b26a6a4e35a533012f2bc8cccbbaa2c3d9546f06b3e49ddc67bdd1dc2a853cac0372be76df089ee02cdd2757
+  languageName: node
+  linkType: hard
+
+"@rvf/zod@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@rvf/zod@npm:7.0.1"
+  peerDependencies:
+    "@rvf/core": ">= 0.0.0 < 8.0.0"
+    "@rvf/set-get": ">= 6.0.3 < 8.0.0"
+    zod: ">= 3.11.0"
+  checksum: 10c0/e0878d48e54b5fb9d09cefda7f7f665b0f6985241bc87ad960e76391de19ba6bd41b0c3e67fc2c0ee1b7dc68d161c6e0b5019f0c0f5164f98b9688c33f4b0f19
   languageName: node
   linkType: hard
 
@@ -4438,12 +4521,19 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:^1.9.4"
     "@hookform/resolvers": "npm:^4.0.0"
+    "@radix-ui/react-label": "npm:^2.1.2"
     "@radix-ui/react-select": "npm:^2.1.6"
     "@radix-ui/react-slot": "npm:^1.1.2"
     "@remix-run/dev": "npm:^2.15.3"
     "@remix-run/node": "npm:^2.15.3"
     "@remix-run/react": "npm:^2.15.3"
     "@remix-run/serve": "npm:^2.15.3"
+    "@remix-validated-form/with-zod": "npm:^2.0.7"
+    "@rvf/core": "npm:^7.0.2"
+    "@rvf/react": "npm:^7.0.2"
+    "@rvf/react-router": "npm:^7.0.2"
+    "@rvf/set-get": "npm:^7.0.0"
+    "@rvf/zod": "npm:^7.0.1"
     "@tanstack/react-query": "npm:^5.66.0"
     "@types/node": "npm:^22.13.1"
     "@types/react": "npm:^18.3.18"
@@ -4455,12 +4545,14 @@ __metadata:
     isbot: "npm:^4.4.0"
     lucide-react: "npm:^0.475.0"
     motion: "npm:^12.4.2"
+    nanoid: "npm:^5.0.9"
     orval: "npm:^7.5.0"
     postcss: "npm:^8.5.2"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-hook-form: "npm:^7.54.2"
     remix-forms: "npm:^3.0.0"
+    remix-validated-form: "npm:^5.1.5"
     tailwind-merge: "npm:^3.0.1"
     tailwindcss: "npm:^3.4.17"
     tailwindcss-animate: "npm:^1.0.7"
@@ -4468,6 +4560,7 @@ __metadata:
     vite: "npm:^5.4.14"
     vite-tsconfig-paths: "npm:^4.3.2"
     zod: "npm:^3.24.2"
+    zod-form-data: "npm:^2.0.5"
   languageName: unknown
   linkType: soft
 
@@ -7727,7 +7820,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immer@npm:^9.0.6":
+"immer@npm:^10.0.4":
+  version: 10.1.1
+  resolution: "immer@npm:10.1.1"
+  checksum: 10c0/b749e10d137ccae91788f41bd57e9387f32ea6d6ea8fd7eb47b23fd7766681575efc7f86ceef7fe24c3bc9d61e38ff5d2f49c2663b2b0c056e280a4510923653
+  languageName: node
+  linkType: hard
+
+"immer@npm:^9.0.12, immer@npm:^9.0.6":
   version: 9.0.21
   resolution: "immer@npm:9.0.21"
   checksum: 10c0/03ea3ed5d4d72e8bd428df4a38ad7e483ea8308e9a113d3b42e0ea2cc0cc38340eb0a6aca69592abbbf047c685dbda04e3d34bf2ff438ab57339ed0a34cc0a05
@@ -10262,12 +10362,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:3.3.6":
+  version: 3.3.6
+  resolution: "nanoid@npm:3.3.6"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 10c0/606b355960d0fcbe3d27924c4c52ef7d47d3b57208808ece73279420d91469b01ec1dce10fae512b6d4a8c5a5432b352b228336a8b2202a6ea68e67fa348e2ee
+  languageName: node
+  linkType: hard
+
 "nanoid@npm:^3.3.8":
   version: 3.3.8
   resolution: "nanoid@npm:3.3.8"
   bin:
     nanoid: bin/nanoid.cjs
   checksum: 10c0/4b1bb29f6cfebf3be3bc4ad1f1296fb0a10a3043a79f34fbffe75d1621b4318319211cd420549459018ea3592f0d2f159247a6f874911d6d26eaaadda2478120
+  languageName: node
+  linkType: hard
+
+"nanoid@npm:^5.0.9":
+  version: 5.0.9
+  resolution: "nanoid@npm:5.0.9"
+  bin:
+    nanoid: bin/nanoid.js
+  checksum: 10c0/a2d9710525d4998a8a1610bbe6eb9a92c254ebab7c567c1ab429046fe7eed9c4df3508b59fb44c58ffdc98edb28dd6f953715c14b64ea0a3a2ce37420cdfeefd
   languageName: node
   linkType: hard
 
@@ -12041,7 +12159,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.3.1":
+"react@npm:^18.1.0, react@npm:^18.3.1":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:
@@ -12315,6 +12433,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"remeda@npm:^1.2.0":
+  version: 1.61.0
+  resolution: "remeda@npm:1.61.0"
+  checksum: 10c0/dc9995e740adc93cddc31f814d9293f3fe327114fdab7fe9e4ac83d5607d63d05645662dec3280a6d9260105a848acfbc763c37ad8b0636f40805aab0cb4bf7e
+  languageName: node
+  linkType: hard
+
 "remix-forms@npm:^3.0.0":
   version: 3.0.0
   resolution: "remix-forms@npm:3.0.0"
@@ -12327,6 +12452,26 @@ __metadata:
     react-router: ">=7"
     zod: ">=3.12"
   checksum: 10c0/9584b885033314a27122f086b4fa47296d6491af62c413127bf319b1291803321f6608e99573140032b377b4e9a24beacf291f9b98aec3507fd9496d15d97916
+  languageName: node
+  linkType: hard
+
+"remix-validated-form@npm:^5.1.5":
+  version: 5.1.5
+  resolution: "remix-validated-form@npm:5.1.5"
+  dependencies:
+    immer: "npm:^9.0.12"
+    lodash.get: "npm:^4.4.2"
+    nanoid: "npm:3.3.6"
+    react: "npm:^18.1.0"
+    remeda: "npm:^1.2.0"
+    tiny-invariant: "npm:^1.2.0"
+    zustand: "npm:^4.3.0"
+  peerDependencies:
+    "@remix-run/node": ">= 1.16.1"
+    "@remix-run/react": ">= 1.15.0"
+    "@remix-run/server-runtime": ">= 1.16.1"
+    react: ^17.0.2 || ^18.0.0
+  checksum: 10c0/255ec6d07d1c25a87938722f161ec64fac114282a1ee5875c4cbe6c6d5d3f410ad37c7777bfe7103b7a59322d59c181a2deed3511672ae29ec74437cbb0d6df8
   languageName: node
   linkType: hard
 
@@ -13587,6 +13732,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tiny-invariant@npm:^1.2.0":
+  version: 1.3.3
+  resolution: "tiny-invariant@npm:1.3.3"
+  checksum: 10c0/65af4a07324b591a059b35269cd696aba21bef2107f29b9f5894d83cc143159a204b299553435b03874ebb5b94d019afa8b8eff241c8a4cfee95872c2e1c1c4a
+  languageName: node
+  linkType: hard
+
 "tmp@npm:^0.0.33":
   version: 0.0.33
   resolution: "tmp@npm:0.0.33"
@@ -14208,6 +14360,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-sync-external-store@npm:^1.2.2":
+  version: 1.4.0
+  resolution: "use-sync-external-store@npm:1.4.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/ec011a5055962c0f6b509d6e78c0b143f8cd069890ae370528753053c55e3b360d3648e76cfaa854faa7a59eb08d6c5fb1015e60ffde9046d32f5b2a295acea5
+  languageName: node
+  linkType: hard
+
 "util-deprecate@npm:^1.0.1, util-deprecate@npm:^1.0.2, util-deprecate@npm:~1.0.1":
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
@@ -14800,6 +14961,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"zod-form-data@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "zod-form-data@npm:2.0.5"
+  peerDependencies:
+    zod: ">= 3.11.0"
+  checksum: 10c0/94ec6b1e0f8ff03134e2aa1712e86894e35300a32968d42dd41f60302f49f3534308a364722e856b9177e10532a954d2b1a6902e25e17c633eeb4eff496861d7
+  languageName: node
+  linkType: hard
+
 "zod-to-json-schema@npm:^3.23.3":
   version: 3.24.1
   resolution: "zod-to-json-schema@npm:3.24.1"
@@ -14813,6 +14983,26 @@ __metadata:
   version: 3.24.2
   resolution: "zod@npm:3.24.2"
   checksum: 10c0/c638c7220150847f13ad90635b3e7d0321b36cce36f3fc6050ed960689594c949c326dfe2c6fa87c14b126ee5d370ccdebd6efb304f41ef5557a4aaca2824565
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^4.3.0":
+  version: 4.5.6
+  resolution: "zustand@npm:4.5.6"
+  dependencies:
+    use-sync-external-store: "npm:^1.2.2"
+  peerDependencies:
+    "@types/react": ">=16.8"
+    immer: ">=9.0.6"
+    react: ">=16.8"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+  checksum: 10c0/5b39aff2ef57e5a8ada647261ec1115697d397be311c51461d9ea81b5b63c6d2c498b960477ad2db72dc21db6aa229a92bdf644f6a8ecf7b1d71df5b4a5e95d3
   languageName: node
   linkType: hard
 
