@@ -4,8 +4,7 @@
     "type": "module",
     "version": "0.0.0",
     "workspaces": [
-        "apps/*",
-        "packages/*"
+        "apps/*"
     ],
     "repository": {
         "type": "git",
@@ -35,7 +34,6 @@
         "yarn": ">=4.6.0"
     },
     "devDependencies": {
-        "@alex/ts": "workspace:^",
         "@biomejs/biome": "1.9.4",
         "axios": "^1.7.9",
         "lerna": "^8.1.9",
