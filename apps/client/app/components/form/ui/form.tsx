@@ -1,4 +1,3 @@
-// import type { categorySchemas } from '../model'
 import { useItemForm } from '../vm/use-item-form'
 import {
     Form as FormShadcn,
@@ -17,10 +16,20 @@ import {
     SelectTrigger,
     SelectValue,
 } from '~/shared/ui'
-import { FormSchema } from '~/shared/schema/items'
+
+import { FormSchema, BaseFormSchema, categorySchemas } from '../model'
+import type { z } from 'zod'
+
+const typeLabels: Record<"REAL_ESTATE" | "AUTO" | "SERVICES", string> = {
+  REAL_ESTATE: "Недвижимость",
+  AUTO: "Авто",
+  SERVICES: "Услуги",
+};
 
 const Form = () => {
     const { form, onSubmit, isLoading, categoryWatch } = useItemForm()
+
+    const typeOptions = (BaseFormSchema.shape.type._def.innerType as z.ZodEnum<["REAL_ESTATE", "AUTO", "SERVICES"]>).options;
 
     return (
         <FormShadcn {...form}>
@@ -83,7 +92,7 @@ const Form = () => {
                         </FormItem>
                     )}
                 />
-                {/* <FormField
+                <FormField
                     control={form.control}
                     name='type'
                     render={({ field }) => (
@@ -91,19 +100,21 @@ const Form = () => {
                             <FormLabel>Категория объявления</FormLabel>
                             <FormControl>
                                 <Select
-                                    onValueChange={(value) => {
-                                      field.onChange(value),
-                                      handleCategoryChange(value)
-                                    }}
+                                    onValueChange={field.onChange}
                                     value={field.value?.toString() ?? ''}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder='Выберите категорию' />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {Object.values(BaseFormSchema.shape.type.options).map(type => (
+                                        {/* {Object.values(BaseFormSchema.shape.type && BaseFormSchema.shape.type._def.defaultValue).map(type => (
                                             <SelectItem key={type} value={type}>
                                                 {type}
+                                            </SelectItem>
+                                        ))} */}
+                                        {typeOptions.map(type => (
+                                            <SelectItem key={type} value={type}>
+                                                {typeLabels[type]}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -112,8 +123,8 @@ const Form = () => {
                             <FormMessage />
                         </FormItem>
                     )}
-                /> */}
-                {/* {categoryWatch &&
+                />
+                {categoryWatch &&
                   // @ts-ignore
                     categorySchemas[categoryWatch]?.map(({ name, label, type = 'text' }) => (
                         <FormField
@@ -130,7 +141,7 @@ const Form = () => {
                                 </FormItem>
                             )}
                         />
-                    ))} */}
+                    ))}
                 <InteractiveHoverButton className='w-full' type='submit' disabled={isLoading}>
                     {isLoading ? 'Отправка...' : 'Разместить'}
                 </InteractiveHoverButton>

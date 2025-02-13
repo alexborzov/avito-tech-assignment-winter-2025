@@ -1,25 +1,6 @@
 // import type { TFormValues } from "~/shared/schema/items"
 
-// export const categorySchemas = {
-//   REAL_ESTATE: [
-//     { name: 'propertyType', label: 'Тип недвижимости' },
-//     { name: 'area', label: 'Площадь м²', type: 'number' },
-//     { name: 'rooms', label: 'Количество комнат', type: 'number' },
-//     { name: 'price', label: 'Цена', type: 'number' },
-//   ] as const,
-//   AUTO: [
-//     { name: 'brand', label: 'Марка' },
-//     { name: 'model', label: 'Модель' },
-//     { name: 'year', label: 'Год выпуска', type: 'number' },
-//     { name: 'mileage', label: 'Пробег', type: 'number', optional: true },
-//   ] as const,
-//   SERVICES: [
-//     { name: 'serviceType', label: 'Тип услуги' },
-//     { name: 'experience', label: 'Опыт (лет)', type: 'number' },
-//     { name: 'cost', label: 'Стоимость', type: 'number' },
-//     { name: 'workSchedule', label: 'График работы', optional: true },
-//   ] as const,
-// }
+
 
 // const defaultValuesMap: Record<TFormValues['type'], Partial<TFormValues>> = {
 //   REAL_ESTATE: {
@@ -94,6 +75,27 @@ export const ServiceSchema = BaseFormSchema.extend({
     cost: z.number().positive('Стоимость должна быть положительным числом'),
     workSchedule: z.string().optional(),
 }).strict()
+
+export const categorySchemas = {
+  REAL_ESTATE: [
+    { name: 'propertyType', label: 'Тип недвижимости' },
+    { name: 'area', label: 'Площадь м²', type: 'number' },
+    { name: 'rooms', label: 'Количество комнат', type: 'number' },
+    { name: 'price', label: 'Цена', type: 'number' },
+  ] as const,
+  AUTO: [
+    { name: 'brand', label: 'Марка' },
+    { name: 'model', label: 'Модель' },
+    { name: 'year', label: 'Год выпуска', type: 'number' },
+    { name: 'mileage', label: 'Пробег', type: 'number', optional: true },
+  ] as const,
+  SERVICES: [
+    { name: 'serviceType', label: 'Тип услуги' },
+    { name: 'experience', label: 'Опыт (лет)', type: 'number' },
+    { name: 'cost', label: 'Стоимость', type: 'number' },
+    { name: 'workSchedule', label: 'График работы', optional: true },
+  ] as const,
+}
 
 export const getDefaultValues = (type: TFormSchema['type']) => {
     return {
