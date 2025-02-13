@@ -2,7 +2,7 @@ import { jsonSchemaTransform, createJsonSchemaTransformObject } from 'fastify-ty
 import fp from 'fastify-plugin'
 import fastifySwagger, { type FastifySwaggerOptions } from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
-import { itemsSchema, paramsSchema } from '../schema/items.ts'
+import { RealEstateSchema, CarSchema, ServiceSchema, FormSchema } from '../schema/items.ts'
 
 const swaggerFp = fp<FastifySwaggerOptions>(
     async fastify => {
@@ -18,8 +18,10 @@ const swaggerFp = fp<FastifySwaggerOptions>(
                 transform: jsonSchemaTransform,
                 transformObject: createJsonSchemaTransformObject({
                     schemas: {
-                        items: itemsSchema,
-                        params: paramsSchema,
+                        RealEstateSchema,
+                        CarSchema,
+                        ServiceSchema,
+                        FormSchema,
                     },
                 }),
             })

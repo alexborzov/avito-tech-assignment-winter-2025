@@ -1,70 +1,46 @@
+import { nanoid } from 'nanoid'
 import { z } from 'zod'
-import { ItemTypes } from '../constants/item-types.ts'
 
-export const paramsSchema = z.object({
-    id: z.string().transform(Number),
-})
+export const nanoidSchema = z
+    .string()
+    .length(21, 'ID должен быть длиной 21 символ')
+    .regex(/^[a-zA-Z0-9_-]{21}$/, 'Некорректный формат ID')
 
-export const itemsSchema = z
+export const BaseFormSchema = z
     .object({
-        id: z.number(),
-        name: z.string(),
-        description: z.string(),
-        location: z.string(),
-        type: z.nativeEnum(ItemTypes),
-        image: z.string().optional(),
-
-        // Общие поля для всех типов
-        propertyType: z.string().optional(),
-        area: z.number().optional(),
-        rooms: z.number().optional(),
-        price: z.number().optional(),
-        brand: z.string().optional(),
-        model: z.string().optional(),
-        year: z.number().optional(),
-        mileage: z.number().optional(),
-        serviceType: z.string().optional(),
-        experience: z.number().optional(),
-        cost: z.number().optional(),
-        workSchedule: z.string().optional(),
+        id: nanoidSchema.default(() => nanoid()),
+        name: z.string().min(1, 'Название обязательно').default(''),
+        description: z.string().min(1, 'Описание обязательно').default(''),
+        location: z.string().min(1, 'Локация обязательна').default(''),
+        photo: z.string().optional(),
+        type: z.enum(['REAL_ESTATE', 'AUTO', 'SERVICES']).default('REAL_ESTATE'),
     })
-    .refine(
-        data => {
-            if (data.type === ItemTypes.REAL_ESTATE) {
-                return (
-                    data.propertyType !== undefined &&
-                    data.area !== undefined &&
-                    data.rooms !== undefined &&
-                    data.price !== undefined
-                )
-            }
-            if (data.type === ItemTypes.AUTO) {
-                return data.brand !== undefined && data.model !== undefined && data.year !== undefined
-            }
-            if (data.type === ItemTypes.SERVICES) {
-                return data.serviceType !== undefined && data.experience !== undefined && data.cost !== undefined
-            }
-            return true
-        },
-        {
-            message: 'Некоторые обязательные поля отсутствуют в зависимости от типа объявления',
-        },
-    )
-    .refine(
-        data => {
-            // Дополнительная проверка для авто: пробег может быть, но не обязателен
-            if (data.type === ItemTypes.AUTO) {
-                return data.mileage === undefined || typeof data.mileage === 'number'
-            }
-            // Для услуг: график работы опционален
-            if (data.type === ItemTypes.SERVICES) {
-                return data.workSchedule === undefined || typeof data.workSchedule === 'string'
-            }
-            return true
-        },
-        {
-            message: 'Неверный формат дополнительных полей',
-        },
-    )
+    .strict()
 
-export type TItems = z.infer<typeof itemsSchema>
+export const RealEstateSchema = BaseFormSchema.extend({
+    type: z.literal('REAL_ESTATE'),
+    propertyType: z.string().min(1, 'Тип недвижимости обязателен').default(''),
+    area: z.number().positive('Площадь должна быть положительным числом').default(0),
+    rooms: z.number().int().positive('Количество комнат должно быть положительным числом').default(0),
+    price: z.number().positive('Цена должна быть положительным числом').default(0),
+}).strict()
+
+export const CarSchema = BaseFormSchema.extend({
+    type: z.literal('AUTO'),
+    brand: z.string().min(1, 'Марка обязательна').default(''),
+    model: z.string().min(1, 'Модель обязательна').default(''),
+    year: z.number().int().min(1886, 'Некорректный год выпуска').default(0),
+    mileage: z.number().positive('Пробег должен быть положительным числом').optional().default(0),
+}).strict()
+
+export const ServiceSchema = BaseFormSchema.extend({
+    type: z.literal('SERVICES'),
+    serviceType: z.string().min(1, 'Тип услуги обязателен'),
+    experience: z.number().int().nonnegative('Опыт работы должен быть положительным числом'),
+    cost: z.number().positive('Стоимость должна быть положительным числом'),
+    workSchedule: z.string().optional(),
+}).strict()
+
+export const FormSchema = z.discriminatedUnion('type', [RealEstateSchema, CarSchema, ServiceSchema])
+
+export type TFormSchema = z.infer<typeof FormSchema>

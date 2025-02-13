@@ -1,53 +1,27 @@
-import { itemsSchema } from '../schema/items.ts'
 import type { FastifyPluginAsync } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { items, itemsIdCounter } from '../storage/items.ts'
-import { ItemTypes } from '../constants/item-types.ts'
+import { loadItems, saveItems } from '../storage/items.ts'
+import { FormSchema } from '../schema/items.ts'
 
 const createSingleItem: FastifyPluginAsync = async (fastify): Promise<void> => {
     fastify.withTypeProvider<ZodTypeProvider>().route({
         method: 'POST',
         url: '/items',
         schema: {
-            body: itemsSchema,
+            body: FormSchema,
         },
         async handler(request, reply) {
-            const { name, description, location, type, ...rest } = request.body
+                const validatedData = FormSchema.parse(request.body)
 
-            switch (type) {
-                case ItemTypes.REAL_ESTATE:
-                    if (!rest.propertyType || !rest.area || !rest.rooms || !rest.price) {
-                        return reply.code(400).send({ error: 'Missing required fields for Real estate' })
-                    }
-                    break
-                case ItemTypes.AUTO:
-                    if (!rest.brand || !rest.model || !rest.year || !rest.mileage) {
-                        return reply.code(400).send({ error: 'Missing required fields for Auto' })
-                    }
-                    break
-                case ItemTypes.SERVICES:
-                    if (!rest.serviceType || !rest.experience || !rest.cost) {
-                        return reply.code(400).send({ error: 'Missing required fields for Services' })
-                    }
-                    break
-                default:
-                    return reply.code(400).send({ error: 'Invalid type' })
-            }
+                const newItem = validatedData;
 
-            const item = Object.assign(
-                {
-                    id: itemsIdCounter(),
-                    name,
-                    description,
-                    location,
-                    type,
-                },
-                rest,
-            )
+                const items = await loadItems()
 
-            items.push(item)
+                items.push(newItem)
 
-            return reply.code(201).send(item)
+                await saveItems(items)
+
+                return reply.code(201).send(newItem)
         },
     })
 }

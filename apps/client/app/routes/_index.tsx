@@ -1,5 +1,5 @@
 import type { MetaFunction } from '@remix-run/node'
-import { Meteors, InteractiveHoverButton, VelocityScroll } from '~/shared/ui'
+import { Meteors, InteractiveHoverButton } from '~/shared/ui'
 import { Link } from '@remix-run/react'
 
 export const meta: MetaFunction = () => {
@@ -21,11 +21,6 @@ export default function Index() {
                     <Link to='/list'>Список объявления</Link>
                 </InteractiveHoverButton>
             </div>
-            {/* <div className='relative flex w-full flex-col items-center justify-center overflow-hidden'>
-                <VelocityScroll>avito.tech</VelocityScroll>
-                <div className='pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background'></div>
-                <div className='pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background'></div>
-            </div> */}
         </div>
     )
 }

@@ -4,8 +4,8 @@ export default defineConfig({
     petstore: {
         input: 'http://localhost:3000/documentation/json',
         output: {
-            mode: 'tags-split',
-            target: 'app/shared/api/generated-api',
+            mode: 'split',
+            target: 'app/shared/api',
             baseUrl: 'http://localhost:3000',
             client: 'react-query',
         },

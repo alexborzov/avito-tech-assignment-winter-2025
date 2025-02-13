@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '~/lib/utils'
+import { cn } from '~/shared/lib/utils'
 import { AnimatePresence, motion, type MotionProps, type Variants } from 'motion/react'
 import type { ElementType } from 'react'
 

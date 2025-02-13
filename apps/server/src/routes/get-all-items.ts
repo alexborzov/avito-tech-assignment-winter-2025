@@ -1,23 +1,22 @@
 import type { FastifyPluginAsync } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { items } from '../storage/items.ts'
+import { loadItems } from '../storage/items.ts'
 import { z } from 'zod'
-import { itemsSchema } from '../schema/items.ts'
+import { FormSchema } from '../schema/items.ts'
 
 const getAllItems: FastifyPluginAsync = async (fastify): Promise<void> => {
-    fastify.after(() => {
-        fastify.withTypeProvider<ZodTypeProvider>().route({
-            method: 'GET',
-            url: '/items',
-            schema: {
-                response: {
-                    200: z.array(itemsSchema),
-                },
+    fastify.withTypeProvider<ZodTypeProvider>().route({
+        method: 'GET',
+        url: '/items',
+        schema: {
+            response: {
+                200: z.array(FormSchema),
             },
-            async handler(_, reply) {
-                return reply.send(items)
-            },
-        })
+        },
+        async handler(_, reply) {
+            const items = await loadItems()
+            return reply.send(items)
+        },
     })
 }
 

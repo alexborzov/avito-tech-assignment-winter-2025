@@ -20,16 +20,21 @@ import type {
 } from '@tanstack/react-query'
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import type { GetItemsId404, Items } from '../avitoTechAssignmentWinter2025ServerSwagger.schemas'
+import type {
+    GetItems200Item,
+    GetItemsId200,
+    PostItemsBody,
+    PutItemsIdBody,
+} from './avitoTechAssignmentWinter2025ServerSwagger.schemas'
 
-export const postItems = (items: Items, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> => {
-    return axios.post(`http://localhost:3000/items`, items, options)
+export const postItems = (postItemsBody: PostItemsBody, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> => {
+    return axios.post(`http://localhost:3000/items`, postItemsBody, options)
 }
 
 export const getPostItemsMutationOptions = <TError = AxiosError<unknown>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof postItems>>, TError, { data: Items }, TContext>
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof postItems>>, TError, { data: PostItemsBody }, TContext>
     axios?: AxiosRequestConfig
-}): UseMutationOptions<Awaited<ReturnType<typeof postItems>>, TError, { data: Items }, TContext> => {
+}): UseMutationOptions<Awaited<ReturnType<typeof postItems>>, TError, { data: PostItemsBody }, TContext> => {
     const mutationKey = ['postItems']
     const { mutation: mutationOptions, axios: axiosOptions } = options
         ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -37,7 +42,7 @@ export const getPostItemsMutationOptions = <TError = AxiosError<unknown>, TConte
             : { ...options, mutation: { ...options.mutation, mutationKey } }
         : { mutation: { mutationKey }, axios: undefined }
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<typeof postItems>>, { data: Items }> = props => {
+    const mutationFn: MutationFunction<Awaited<ReturnType<typeof postItems>>, { data: PostItemsBody }> = props => {
         const { data } = props ?? {}
 
         return postItems(data, axiosOptions)
@@ -47,18 +52,19 @@ export const getPostItemsMutationOptions = <TError = AxiosError<unknown>, TConte
 }
 
 export type PostItemsMutationResult = NonNullable<Awaited<ReturnType<typeof postItems>>>
-export type PostItemsMutationBody = Items
+export type PostItemsMutationBody = PostItemsBody
 export type PostItemsMutationError = AxiosError<unknown>
 
 export const usePostItems = <TError = AxiosError<unknown>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof postItems>>, TError, { data: Items }, TContext>
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof postItems>>, TError, { data: PostItemsBody }, TContext>
     axios?: AxiosRequestConfig
-}): UseMutationResult<Awaited<ReturnType<typeof postItems>>, TError, { data: Items }, TContext> => {
+}): UseMutationResult<Awaited<ReturnType<typeof postItems>>, TError, { data: PostItemsBody }, TContext> => {
     const mutationOptions = getPostItemsMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
-export const getItems = (options?: AxiosRequestConfig): Promise<AxiosResponse<Items[]>> => {
+
+export const getItems = (options?: AxiosRequestConfig): Promise<AxiosResponse<GetItems200Item[]>> => {
     return axios.get(`http://localhost:3000/items`, options)
 }
 
@@ -170,7 +176,8 @@ export const useDeleteItemsId = <TError = AxiosError<unknown>, TContext = unknow
 
     return useMutation(mutationOptions)
 }
-export const getItemsId = (id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Items>> => {
+
+export const getItemsId = (id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<GetItemsId200>> => {
     return axios.get(`http://localhost:3000/items/${id}`, options)
 }
 
@@ -178,10 +185,7 @@ export const getGetItemsIdQueryKey = (id: string) => {
     return [`http://localhost:3000/items/${id}`] as const
 }
 
-export const getGetItemsIdQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemsId>>,
-    TError = AxiosError<GetItemsId404>,
->(
+export const getGetItemsIdQueryOptions = <TData = Awaited<ReturnType<typeof getItemsId>>, TError = AxiosError<unknown>>(
     id: string,
     options?: {
         query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getItemsId>>, TError, TData>>
@@ -203,9 +207,9 @@ export const getGetItemsIdQueryOptions = <
 }
 
 export type GetItemsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getItemsId>>>
-export type GetItemsIdQueryError = AxiosError<GetItemsId404>
+export type GetItemsIdQueryError = AxiosError<unknown>
 
-export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TError = AxiosError<GetItemsId404>>(
+export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TError = AxiosError<unknown>>(
     id: string,
     options: {
         query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getItemsId>>, TError, TData>> &
@@ -220,7 +224,7 @@ export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TE
         axios?: AxiosRequestConfig
     },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TError = AxiosError<GetItemsId404>>(
+export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TError = AxiosError<unknown>>(
     id: string,
     options?: {
         query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getItemsId>>, TError, TData>> &
@@ -235,7 +239,7 @@ export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TE
         axios?: AxiosRequestConfig
     },
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TError = AxiosError<GetItemsId404>>(
+export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TError = AxiosError<unknown>>(
     id: string,
     options?: {
         query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getItemsId>>, TError, TData>>
@@ -243,7 +247,7 @@ export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TE
     },
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TError = AxiosError<GetItemsId404>>(
+export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TError = AxiosError<unknown>>(
     id: string,
     options?: {
         query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getItemsId>>, TError, TData>>
@@ -261,14 +265,28 @@ export function useGetItemsId<TData = Awaited<ReturnType<typeof getItemsId>>, TE
     return query
 }
 
-export const putItemsId = (id: string, items: Items, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> => {
-    return axios.put(`http://localhost:3000/items/${id}`, items, options)
+export const putItemsId = (
+    id: string,
+    putItemsIdBody: PutItemsIdBody,
+    options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+    return axios.put(`http://localhost:3000/items/${id}`, putItemsIdBody, options)
 }
 
 export const getPutItemsIdMutationOptions = <TError = AxiosError<unknown>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof putItemsId>>, TError, { id: string; data: Items }, TContext>
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<typeof putItemsId>>,
+        TError,
+        { id: string; data: PutItemsIdBody },
+        TContext
+    >
     axios?: AxiosRequestConfig
-}): UseMutationOptions<Awaited<ReturnType<typeof putItemsId>>, TError, { id: string; data: Items }, TContext> => {
+}): UseMutationOptions<
+    Awaited<ReturnType<typeof putItemsId>>,
+    TError,
+    { id: string; data: PutItemsIdBody },
+    TContext
+> => {
     const mutationKey = ['putItemsId']
     const { mutation: mutationOptions, axios: axiosOptions } = options
         ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -276,7 +294,10 @@ export const getPutItemsIdMutationOptions = <TError = AxiosError<unknown>, TCont
             : { ...options, mutation: { ...options.mutation, mutationKey } }
         : { mutation: { mutationKey }, axios: undefined }
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<typeof putItemsId>>, { id: string; data: Items }> = props => {
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<typeof putItemsId>>,
+        { id: string; data: PutItemsIdBody }
+    > = props => {
         const { id, data } = props ?? {}
 
         return putItemsId(id, data, axiosOptions)
@@ -286,17 +307,28 @@ export const getPutItemsIdMutationOptions = <TError = AxiosError<unknown>, TCont
 }
 
 export type PutItemsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putItemsId>>>
-export type PutItemsIdMutationBody = Items
+export type PutItemsIdMutationBody = PutItemsIdBody
 export type PutItemsIdMutationError = AxiosError<unknown>
 
 export const usePutItemsId = <TError = AxiosError<unknown>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof putItemsId>>, TError, { id: string; data: Items }, TContext>
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<typeof putItemsId>>,
+        TError,
+        { id: string; data: PutItemsIdBody },
+        TContext
+    >
     axios?: AxiosRequestConfig
-}): UseMutationResult<Awaited<ReturnType<typeof putItemsId>>, TError, { id: string; data: Items }, TContext> => {
+}): UseMutationResult<
+    Awaited<ReturnType<typeof putItemsId>>,
+    TError,
+    { id: string; data: PutItemsIdBody },
+    TContext
+> => {
     const mutationOptions = getPutItemsIdMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
+
 export const get = (options?: AxiosRequestConfig): Promise<AxiosResponse<void>> => {
     return axios.get(`http://localhost:3000/`, options)
 }

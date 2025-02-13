@@ -36,7 +36,7 @@ const build = async () => {
     const pkg = JSON.parse(await readFile(new URL('./package.json', import.meta.url), 'utf-8'))
     try {
         await esbuild.build({
-            entryPoints: ['src/index.ts', 'src/routes/**/*.ts', 'src/plugins/**/*.ts'],
+            entryPoints: ['src/index.ts', 'src/**/*.ts'],
             outdir: 'dist',
             bundle: true,
             format: 'esm',

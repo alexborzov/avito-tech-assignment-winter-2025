@@ -1,7 +1,7 @@
-import type { FC } from 'react'
+// import type { categorySchemas } from '../model'
 import { useItemForm } from '../vm/use-item-form'
 import {
-    Form,
+    Form as FormShadcn,
     FormControl,
     FormDescription,
     FormField,
@@ -17,14 +17,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from '~/shared/ui'
-import { ItemsType } from '~/shared/api'
-import { categorySchemas } from '../model/schema'
+import { FormSchema } from '~/shared/schema/items'
 
-const FormItem2 = () => {
-    const { form, onSubmit, isLoading, categoryWatch, handleCategoryChange } = useItemForm()
+const Form = () => {
+    const { form, onSubmit, isLoading, categoryWatch } = useItemForm()
 
     return (
-        <Form {...form}>
+        <FormShadcn {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
                 <FormField
                     control={form.control}
@@ -35,7 +34,7 @@ const FormItem2 = () => {
                             <FormControl>
                                 <Input placeholder='name' {...field} />
                             </FormControl>
-                            <FormDescription>Введите название объявление</FormDescription>
+                            <FormDescription className='text-sm'>Введите название объявление</FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -70,7 +69,7 @@ const FormItem2 = () => {
                 />
                 <FormField
                     control={form.control}
-                    name='image'
+                    name='photo'
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Фото</FormLabel>
@@ -84,7 +83,7 @@ const FormItem2 = () => {
                         </FormItem>
                     )}
                 />
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name='type'
                     render={({ field }) => (
@@ -92,16 +91,17 @@ const FormItem2 = () => {
                             <FormLabel>Категория объявления</FormLabel>
                             <FormControl>
                                 <Select
-                                    onValueChange={value => {
-                                        field.onChange(value), handleCategoryChange(value as ItemsType)
+                                    onValueChange={(value) => {
+                                      field.onChange(value),
+                                      handleCategoryChange(value)
                                     }}
-                                    value={field.value ?? ''}
+                                    value={field.value?.toString() ?? ''}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder='Выберите категорию' />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {Object.values(ItemsType).map(type => (
+                                        {Object.values(BaseFormSchema.shape.type.options).map(type => (
                                             <SelectItem key={type} value={type}>
                                                 {type}
                                             </SelectItem>
@@ -112,9 +112,10 @@ const FormItem2 = () => {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
-                {categoryWatch &&
-                    categorySchemas[categoryWatch]?.map(({ name, label, type }) => (
+                /> */}
+                {/* {categoryWatch &&
+                  // @ts-ignore
+                    categorySchemas[categoryWatch]?.map(({ name, label, type = 'text' }) => (
                         <FormField
                             key={name}
                             control={form.control}
@@ -123,19 +124,19 @@ const FormItem2 = () => {
                                 <FormItem>
                                     <FormLabel>{label}</FormLabel>
                                     <FormControl>
-                                        <Input type={type ? type : 'text'} placeholder={label} {...field} />
+                                        <Input type={type} placeholder={label} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                    ))}
+                    ))} */}
                 <InteractiveHoverButton className='w-full' type='submit' disabled={isLoading}>
                     {isLoading ? 'Отправка...' : 'Разместить'}
                 </InteractiveHoverButton>
             </form>
-        </Form>
+        </FormShadcn>
     )
 }
 
-export { FormItem2 }
+export { Form }

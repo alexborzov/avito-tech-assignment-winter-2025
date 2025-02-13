@@ -1,6 +1,7 @@
 {
   "css.lint.unknownAtRules": "ignore",
   "editor.defaultFormatter": "biomejs.biome",
+  "javascript.preferences.importModuleSpecifierEnding": "js",
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit",
     "source.organizeImports.biome": "explicit"

@@ -1,14 +1,8 @@
 import type { FastifyPluginAsync } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { items } from '../storage/items.ts'
-import { itemsSchema, paramsSchema } from '../schema/items.ts'
+import { loadItems } from '../storage/items.ts'
+import { nanoidSchema, FormSchema } from '../schema/items.ts'
 import { z } from 'zod'
-
-const errorSchema = z.object({
-    error: z.string(),
-})
-
-// const responseSchema = z.union([itemsSchema, errorSchema]);
 
 const getItemById: FastifyPluginAsync = async (fastify): Promise<void> => {
     fastify.withTypeProvider<ZodTypeProvider>().route({
@@ -16,14 +10,18 @@ const getItemById: FastifyPluginAsync = async (fastify): Promise<void> => {
         url: '/items/:id',
         schema: {
             response: {
-                200: itemsSchema,
-                404: errorSchema,
+                200: FormSchema,
             },
-            params: paramsSchema,
+            params: z.object({
+              id: nanoidSchema
+            }),
         },
         async handler(request, reply) {
+            const items = await loadItems()
+
             const item = items.find(i => i.id === request.params.id)
 
+            // @ts-ignore
             if (!item) return reply.status(404).send({ error: 'Item not found' })
 
             return reply.send(item)

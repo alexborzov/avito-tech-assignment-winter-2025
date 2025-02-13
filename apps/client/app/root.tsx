@@ -1,9 +1,13 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, Link } from '@remix-run/react'
-import type { LinksFunction } from '@remix-run/node'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, Link, useRouteLoaderData } from '@remix-run/react'
+import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { themeSessionResolver } from '~/sessions.server'
+import { useNonce } from '@shopify/hydrogen'
 import { Button } from '~/shared/ui/button'
-
+import { PreventFlashOnWrongTheme, type Theme, ThemeProvider, useTheme } from 'remix-themes'
+import { ModeToggle } from '~/components/theme/ui'
+import clsx from 'clsx'
 import '~/tailwind.css'
 
 export const links: LinksFunction = () => [
@@ -19,32 +23,17 @@ export const links: LinksFunction = () => [
     },
 ]
 
-export function Layout({ children }: { children: React.ReactNode }) {
-    return (
-        <html lang='en'>
-            <head>
-                <meta charSet='utf-8' />
-                <meta name='viewport' content='width=device-width, initial-scale=1' />
-                <Meta />
-                <Links />
-            </head>
-            <body>
-                <div className='flex w-full p-4 font-bold'>
-                    <Link to='/'>
-                        <Button className='font-bold' variant={'link'}>
-                            avito.tech
-                        </Button>
-                    </Link>
-                </div>
-                {children}
-                <ScrollRestoration />
-                <Scripts />
-            </body>
-        </html>
-    )
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+    const { getTheme } = await themeSessionResolver(request)
+
+    return {
+        theme: getTheme(),
+    }
 }
 
-export default function App() {
+export function Layout({ children }: { children: React.ReactNode }) {
+    const data = useRouteLoaderData<typeof loader>('root')
+
     const [queryClient] = useState(
         () =>
             new QueryClient({
@@ -55,9 +44,52 @@ export default function App() {
                 },
             }),
     )
+
     return (
         <QueryClientProvider client={queryClient}>
-            <Outlet />
+            <ThemeProvider specifiedTheme={data?.theme as Theme} themeAction='/action/set-theme'>
+                <InnerLayout ssrTheme={Boolean(data?.theme)}>{children}</InnerLayout>
+            </ThemeProvider>
         </QueryClientProvider>
+    )
+}
+
+export default function App() {
+    return <Outlet />
+}
+
+const InnerLayout = ({
+    ssrTheme,
+    children,
+}: {
+    ssrTheme: boolean
+    children: React.ReactNode
+}) => {
+    const [theme] = useTheme()
+    const nonce = useNonce()
+
+    return (
+        <html lang='en' className={clsx(theme)}>
+            <head>
+                <meta charSet='utf-8' />
+                <meta name='viewport' content='width=device-width, initial-scale=1' />
+                <Meta />
+                <Links />
+            </head>
+            <body>
+                <div className='flex w-full p-4 font-bold justify-between'>
+                    <Link to='/'>
+                        <Button className='font-bold' variant={'link'}>
+                            avito.tech
+                        </Button>
+                    </Link>
+                    <ModeToggle />
+                </div>
+                {children}
+                <ScrollRestoration nonce={nonce} />
+                <PreventFlashOnWrongTheme ssrTheme={ssrTheme} nonce={nonce} />
+                <Scripts nonce={nonce} />
+            </body>
+        </html>
     )
 }
