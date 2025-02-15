@@ -1,3 +1,4 @@
+version: '3'
 services:
   fastify-app:
     build:
@@ -6,6 +7,17 @@ services:
     working_dir: /app/apps/server
     ports:
       - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: always
+
+  remix-app:
+    build:
+      context: .
+      dockerfile: apps/client/Dockerfile
+    working_dir: /app/apps/client
+    ports:
+      - "3001:3000"
     environment:
       - NODE_ENV=production
     restart: always

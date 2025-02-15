@@ -3,22 +3,20 @@
     "private": true,
     "type": "module",
     "version": "0.0.0",
-    "workspaces": ["apps/*"],
+    "workspaces": [
+        "apps/*"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/alexborzov/avito-tech-assignment-winter-2025.git"
     },
     "scripts": {
         "build": "lerna run build",
+        "start": "lerna run start",
         "build:clean": "lerna run build:clean",
-        "changesets": "changeset",
         "check-types": "lerna run check-types",
-        "ci:release": "changeset publish",
-        "ci:version": "changeset version",
         "clean": "yarn build:clean && yarn clean:all && yarn clean:cache",
         "clean:cache": "yarn cache clean --all && rm -rf .yarn/cache .yarn/__virtual__ .yarn/berry ./.pnp.cjs ./.pnp.loader.mjs .yarn node_modules yarn.lock",
-        "lint": "lerna run --ignore @demonicattack/typescript lint",
-        "lint:fix": "lerna run --ignore @demonicattack/typescript lint:fix",
         "lint:ws": "yarn dlx sherif@latest -r packages-without-package-json",
         "prepare": "husky",
         "clean:all": "lerna run clean:all",
