@@ -1,8 +1,8 @@
 import type { FastifyPluginAsync } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { loadItems } from '../storage/items.ts'
-import { nanoidSchema } from '../schema/items.ts'
 import { z } from 'zod'
+import { nanoidSchema } from '../schema/items.ts'
+import { loadItems, saveItems } from '../storage/items.ts'
 
 const deleteItemById: FastifyPluginAsync = async fastify => {
     fastify.withTypeProvider<ZodTypeProvider>().route({
@@ -21,6 +21,8 @@ const deleteItemById: FastifyPluginAsync = async fastify => {
             if (itemIndex === -1) return reply.code(404).send({ error: 'Item not found' })
 
             items.splice(itemIndex, 1)
+
+            await saveItems(items)
 
             return reply.code(204).send()
         },

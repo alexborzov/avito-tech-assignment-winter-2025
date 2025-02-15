@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, Link, useRouteLoaderData } from '@remix-run/react'
 import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { themeSessionResolver } from '~/sessions.server'
+import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteLoaderData } from '@remix-run/react'
 import { useNonce } from '@shopify/hydrogen'
-import { Button } from '~/shared/ui/button'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import clsx from 'clsx'
+import { useState } from 'react'
 import { PreventFlashOnWrongTheme, type Theme, ThemeProvider, useTheme } from 'remix-themes'
 import { ModeToggle } from '~/components/theme/ui'
-import clsx from 'clsx'
+import { themeSessionResolver } from '~/sessions.server'
+import { Button } from '~/shared/ui/button'
 import '~/tailwind.css'
 
 export const links: LinksFunction = () => [
@@ -34,16 +34,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export function Layout({ children }: { children: React.ReactNode }) {
     const data = useRouteLoaderData<typeof loader>('root')
 
-    const [queryClient] = useState(
-        () =>
-            new QueryClient({
-                defaultOptions: {
-                    queries: {
-                        staleTime: 60 * 1000,
-                    },
-                },
-            }),
-    )
+    const [queryClient] = useState(() => new QueryClient())
 
     return (
         <QueryClientProvider client={queryClient}>

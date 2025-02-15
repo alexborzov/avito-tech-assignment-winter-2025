@@ -1,45 +1,39 @@
-// import type { TFormValues } from "~/shared/schema/items"
-
-
-
-// const defaultValuesMap: Record<TFormValues['type'], Partial<TFormValues>> = {
-//   REAL_ESTATE: {
-//       propertyType: '',
-//       area: 0,
-//       rooms: 0,
-//       price: 0,
-//   },
-//   AUTO: {
-//       brand: '',
-//       model: '',
-//       year: 0,
-//       mileage: 0,
-//   },
-//   SERVICES: {
-//       serviceType: '',
-//       experience: 0,
-//       cost: 0,
-//       workSchedule: '',
-//   },
-// }
-
-// export const getDefaultValues = (category: TFormValues['type']): TFormValues => ({
-//   name: '',
-//   description: '',
-//   location: '',
-//   photo: '',
-//   type: category,
-//   ...structuredClone(defaultValuesMap[category]),
-// }) as
-
-import type { FormSchema as TFormSchema } from '~/shared/api'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
+
+type CategorySchemaMap = {
+    REAL_ESTATE: {
+        propertyType: string
+        area: number
+        rooms: number
+        price: number
+    }
+    AUTO: {
+        brand: string
+        model: string
+        year: number
+        mileage: number
+    }
+    SERVICES: {
+        serviceType: string
+        experience: number
+        cost: number
+        workSchedule: string | undefined
+    }
+}
+
+interface CategoryField {
+    name: string
+    label: string
+    type?: 'text' | 'number'
+    optional?: boolean
+}
 
 export const nanoidSchema = z
     .string()
     .length(21, 'ID должен быть длиной 21 символ')
     .regex(/^[a-zA-Z0-9_-]{21}$/, 'Некорректный формат ID')
+    .optional()
 
 export const BaseFormSchema = z
     .object({
@@ -76,97 +70,46 @@ export const ServiceSchema = BaseFormSchema.extend({
     workSchedule: z.string().optional(),
 }).strict()
 
-export const categorySchemas = {
-  REAL_ESTATE: [
-    { name: 'propertyType', label: 'Тип недвижимости' },
-    { name: 'area', label: 'Площадь м²', type: 'number' },
-    { name: 'rooms', label: 'Количество комнат', type: 'number' },
-    { name: 'price', label: 'Цена', type: 'number' },
-  ] as const,
-  AUTO: [
-    { name: 'brand', label: 'Марка' },
-    { name: 'model', label: 'Модель' },
-    { name: 'year', label: 'Год выпуска', type: 'number' },
-    { name: 'mileage', label: 'Пробег', type: 'number', optional: true },
-  ] as const,
-  SERVICES: [
-    { name: 'serviceType', label: 'Тип услуги' },
-    { name: 'experience', label: 'Опыт (лет)', type: 'number' },
-    { name: 'cost', label: 'Стоимость', type: 'number' },
-    { name: 'workSchedule', label: 'График работы', optional: true },
-  ] as const,
+export const categorySchemasMap: Record<keyof CategorySchemaMap, CategoryField[]> = {
+    REAL_ESTATE: [
+        { name: 'propertyType', label: 'Тип недвижимости' },
+        { name: 'area', label: 'Площадь м²', type: 'number' },
+        { name: 'rooms', label: 'Количество комнат', type: 'number' },
+        { name: 'price', label: 'Цена', type: 'number' },
+    ],
+    AUTO: [
+        { name: 'brand', label: 'Марка' },
+        { name: 'model', label: 'Модель' },
+        { name: 'year', label: 'Год выпуска', type: 'number' },
+        { name: 'mileage', label: 'Пробег', type: 'number', optional: true },
+    ],
+    SERVICES: [
+        { name: 'serviceType', label: 'Тип услуги' },
+        { name: 'experience', label: 'Опыт (лет)', type: 'number' },
+        { name: 'cost', label: 'Стоимость', type: 'number' },
+        { name: 'workSchedule', label: 'График работы', optional: true },
+    ],
 }
 
-export const getDefaultValues = (type: TFormSchema['type']) => {
-    return {
-        name: '',
-        description: '',
-        location: '',
-        photo: undefined,
-        type,
-        ...(type === 'REAL_ESTATE'
-            ? { propertyType: '', area: 0, rooms: 0, price: 0 }
-            : type === 'AUTO'
-              ? { brand: '', model: '', year: new Date().getFullYear(), mileage: 0 }
-              : { serviceType: '', experience: 0, cost: 0, workSchedule: '' }),
-    }
-}
+export const getDefaultValues = (type: TFormSchema['type'], existingId?: string) => ({
+    id: existingId ?? nanoid(),
+    name: '',
+    description: '',
+    location: '',
+    photo: undefined,
+    ...(type === 'REAL_ESTATE'
+        ? { propertyType: '', area: 0, rooms: 0, price: 0 }
+        : type === 'AUTO'
+          ? { brand: '', model: '', year: new Date().getFullYear(), mileage: 0 }
+          : { serviceType: '', experience: 0, cost: 0, workSchedule: undefined }),
+})
 
 export const FormSchema = z.discriminatedUnion('type', [RealEstateSchema, CarSchema, ServiceSchema])
 
-// export const getDefaultValues = (type: TFormSchema['type']): TFormSchema => {
-//   return {
-//     name: '',
-//     description: '',
-//     location: '',
-//     photo: undefined,
-//     type: z.union([z.literal('REAL_ESTATE'), z.literal('AUTO'), z.literal('SERVICES')]),
-//     ...(type === 'REAL_ESTATE'
-//         ? { propertyType: '', area: 0, rooms: 0, price: 0 }
-//         : type === 'AUTO'
-//         ? { brand: '', model: '', year: new Date().getFullYear(), mileage: 0 }
-//         : { serviceType: '', experience: 0, cost: 0, workSchedule: '' }),
-//   }
-// }
+export type TFormSchema = z.infer<typeof FormSchema>
 
-// export const getDefaultRealEstateValues = (): RealEstateSchema => {
-//   return {
-//     name: '',
-//     description: '',
-//     location: '',
-//     photo: undefined,
-//     type: 'REAL_ESTATE',
-//     propertyType: '',
-//     area: 0,
-//     rooms: 0,
-//     price: 0,
-//   }
-// }
-
-// export const getDefaultCarValues = (): CarSchema => {
-//   return {
-//     name: '',
-//     description: '',
-//     location: '',
-//     photo: undefined,
-//     type: 'AUTO',
-//     brand: '',
-//     model: '',
-//     year: new Date().getFullYear(),
-//     mileage: 0,
-//   }
-// }
-
-// export const getDefaultServiceValues = (): ServiceSchema => {
-//   return {
-//     name: '',
-//     description: '',
-//     location: '',
-//     photo: undefined,
-//     type: 'SERVICES',
-//     serviceType: '',
-//     experience: 0,
-//     cost: 0,
-//     workSchedule: '',
-//   }
-// }
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const setFormValues = (form: any, item: TFormSchema) => {
+    const defaultValues = getDefaultValues(item.type, item.id)
+    form.reset({ ...defaultValues, ...item })
+}

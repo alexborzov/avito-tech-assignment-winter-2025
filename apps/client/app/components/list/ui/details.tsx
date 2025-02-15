@@ -14,7 +14,7 @@ export const details = (item: GetItemsId200) => {
                         🚪 <strong>Комнат:</strong> {item.rooms}
                     </p>
                     <p>
-                        💰 <strong>Цена:</strong> {item.price?.toLocaleString()} ₽
+                        💰 <strong>Цена:</strong> {item.price ? item.price.toLocaleString('ru-RU') : 'Не указана'} ₽
                     </p>
                 </>
             )
@@ -31,7 +31,7 @@ export const details = (item: GetItemsId200) => {
                         📅 <strong>Год:</strong> {item.year}
                     </p>
                     <p>
-                        ⏳ <strong>Пробег:</strong> {item.mileage?.toLocaleString()} км
+                        ⏳ <strong>Пробег:</strong> {item.mileage?.toLocaleString('ru-RU')} км
                     </p>
                 </>
             )

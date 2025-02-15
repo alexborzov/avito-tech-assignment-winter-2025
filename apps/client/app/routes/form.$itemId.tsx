@@ -1,8 +1,7 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { HydrationBoundary } from '@tanstack/react-query'
-import { QueryClient, dehydrate } from '@tanstack/react-query'
-import { ListId } from '~/components/list/ui'
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query'
+import { Form } from '~/components/form/ui'
 import { getGetItemsIdQueryKey, getItemsId } from '~/shared/api'
 
 interface ILoader extends LoaderFunctionArgs {
@@ -11,7 +10,7 @@ interface ILoader extends LoaderFunctionArgs {
     }
 }
 
-export async function loader({ params: { itemId } }: ILoader) {
+export const loader = async ({ params: { itemId } }: ILoader) => {
     const queryClient = new QueryClient()
 
     const queryKey = getGetItemsIdQueryKey(itemId)
@@ -21,19 +20,14 @@ export async function loader({ params: { itemId } }: ILoader) {
         queryFn: () => getItemsId(itemId),
     })
 
-    return { dehydratedState: dehydrate(queryClient), params: { itemId } }
+    return { dehydratedState: dehydrate(queryClient), itemId }
 }
 
-const ItemId = () => {
-    const {
-        dehydratedState,
-        params: { itemId },
-    } = useLoaderData<typeof loader>()
+export default function FormIdRoute() {
+    const { dehydratedState, itemId } = useLoaderData<typeof loader>()
     return (
         <HydrationBoundary state={dehydratedState}>
-            <ListId itemId={itemId} />
+            <Form itemId={itemId} />
         </HydrationBoundary>
     )
 }
-
-export default ItemId

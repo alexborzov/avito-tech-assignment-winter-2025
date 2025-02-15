@@ -5,6 +5,7 @@ export const nanoidSchema = z
     .string()
     .length(21, 'ID должен быть длиной 21 символ')
     .regex(/^[a-zA-Z0-9_-]{21}$/, 'Некорректный формат ID')
+    .optional()
 
 export const BaseFormSchema = z
     .object({

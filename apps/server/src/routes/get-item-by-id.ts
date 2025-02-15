@@ -1,8 +1,8 @@
 import type { FastifyPluginAsync } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { loadItems } from '../storage/items.ts'
-import { nanoidSchema, FormSchema } from '../schema/items.ts'
 import { z } from 'zod'
+import { FormSchema, nanoidSchema } from '../schema/items.ts'
+import { loadItems } from '../storage/items.ts'
 
 const getItemById: FastifyPluginAsync = async (fastify): Promise<void> => {
     fastify.withTypeProvider<ZodTypeProvider>().route({
@@ -13,7 +13,7 @@ const getItemById: FastifyPluginAsync = async (fastify): Promise<void> => {
                 200: FormSchema,
             },
             params: z.object({
-              id: nanoidSchema
+                id: nanoidSchema,
             }),
         },
         async handler(request, reply) {

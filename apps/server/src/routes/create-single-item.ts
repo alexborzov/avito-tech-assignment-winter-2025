@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { loadItems, saveItems } from '../storage/items.ts'
 import { FormSchema } from '../schema/items.ts'
+import { loadItems, saveItems } from '../storage/items.ts'
 
 const createSingleItem: FastifyPluginAsync = async (fastify): Promise<void> => {
     fastify.withTypeProvider<ZodTypeProvider>().route({
@@ -11,17 +11,17 @@ const createSingleItem: FastifyPluginAsync = async (fastify): Promise<void> => {
             body: FormSchema,
         },
         async handler(request, reply) {
-                const validatedData = FormSchema.parse(request.body)
+            const validatedData = FormSchema.parse(request.body)
 
-                const newItem = validatedData;
+            const newItem = validatedData
 
-                const items = await loadItems()
+            const items = await loadItems()
 
-                items.push(newItem)
+            items.push(newItem)
 
-                await saveItems(items)
+            await saveItems(items)
 
-                return reply.code(201).send(newItem)
+            return reply.code(201).send(newItem)
         },
     })
 }

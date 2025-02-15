@@ -1,152 +1,168 @@
-import { useItemForm } from '../vm/use-item-form'
+import type { FC } from 'react'
 import {
-    Form as FormShadcn,
+    Button,
     FormControl,
     FormDescription,
     FormField,
     FormItem,
-    Input,
     FormLabel,
     FormMessage,
-    InteractiveHoverButton,
-    Textarea,
+    Form as FormShadcn,
+    Input,
+    Label,
+    Loading,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
+    Textarea,
 } from '~/shared/ui'
+import { type TFormSchema, categorySchemasMap } from '../model'
+import { useForm } from '../vm/use-form'
 
-import { FormSchema, BaseFormSchema, categorySchemas } from '../model'
-import type { z } from 'zod'
+export interface IListIdProps {
+    itemId?: string
+}
 
-const typeLabels: Record<"REAL_ESTATE" | "AUTO" | "SERVICES", string> = {
-  REAL_ESTATE: "Недвижимость",
-  AUTO: "Авто",
-  SERVICES: "Услуги",
-};
+const categoryOptions: Record<TFormSchema['type'], string> = {
+    REAL_ESTATE: 'Недвижимость',
+    AUTO: 'Авто',
+    SERVICES: 'Услуги',
+}
 
-const Form = () => {
-    const { form, onSubmit, isLoading, categoryWatch } = useItemForm()
+const Form: FC<IListIdProps> = ({ itemId }) => {
+    console.log('@FormItemId', itemId)
+    const { form, onSubmit, isLoading, watchType, handleCancel, error } = useForm({ itemId })
 
-    const typeOptions = (BaseFormSchema.shape.type._def.innerType as z.ZodEnum<["REAL_ESTATE", "AUTO", "SERVICES"]>).options;
+    if (isLoading) return <Loading />
+
+    if (error instanceof Error) return <div>Error: {error.message}</div>
 
     return (
-        <FormShadcn {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-                <FormField
-                    control={form.control}
-                    name='name'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Название</FormLabel>
-                            <FormControl>
-                                <Input placeholder='name' {...field} />
-                            </FormControl>
-                            <FormDescription className='text-sm'>Введите название объявление</FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='description'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Описание</FormLabel>
-                            <FormControl>
-                                <Textarea placeholder='descriptions' {...field} />
-                            </FormControl>
-                            <FormDescription>Введите описание объявление</FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='location'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Локация</FormLabel>
-                            <FormControl>
-                                <Input placeholder='location' {...field} />
-                            </FormControl>
-                            <FormDescription>Введите локацию</FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='photo'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Фото</FormLabel>
-                            <FormControl>
-                                <Input type='file' placeholder='image' {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                Прикрепите фотографию <strong>(необязательное)</strong>
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='type'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Категория объявления</FormLabel>
-                            <FormControl>
-                                <Select
-                                    onValueChange={field.onChange}
-                                    value={field.value?.toString() ?? ''}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder='Выберите категорию' />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {/* {Object.values(BaseFormSchema.shape.type && BaseFormSchema.shape.type._def.defaultValue).map(type => (
-                                            <SelectItem key={type} value={type}>
-                                                {type}
-                                            </SelectItem>
-                                        ))} */}
-                                        {typeOptions.map(type => (
-                                            <SelectItem key={type} value={type}>
-                                                {typeLabels[type]}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                {categoryWatch &&
-                  // @ts-ignore
-                    categorySchemas[categoryWatch]?.map(({ name, label, type = 'text' }) => (
+        <section className='flex flex-col justify-center items-center min-h-full max-w-[800px] mx-auto'>
+            {itemId && <Label className='p-4 border border-red-400'>Форма находится в режиме редактирования</Label>}
+            <FormShadcn {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 w-full'>
+                    <FormField
+                        control={form.control}
+                        name='name'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Название</FormLabel>
+                                <FormControl>
+                                    <Input placeholder='name' {...field} />
+                                </FormControl>
+                                <FormDescription className='text-sm'>Введите название объявление</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='description'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Описание</FormLabel>
+                                <FormControl>
+                                    <Textarea placeholder='descriptions' {...field} />
+                                </FormControl>
+                                <FormDescription>Введите описание объявление</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='location'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Локация</FormLabel>
+                                <FormControl>
+                                    <Input placeholder='location' {...field} />
+                                </FormControl>
+                                <FormDescription>Введите локацию</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='photo'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Фото</FormLabel>
+                                <FormControl>
+                                    <Input type='file' placeholder='image' {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    Прикрепите фотографию <strong>(необязательное)</strong>
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='type'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Категория объявления</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder='Выберите категорию' />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {Object.entries(categoryOptions).map(([value, label]) => (
+                                                <SelectItem key={value} value={value}>
+                                                    {label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    {categorySchemasMap[watchType].map(field => (
                         <FormField
-                            key={name}
+                            key={field.name}
                             control={form.control}
-                            name={name}
-                            render={({ field }) => (
+                            // @ts-ignore
+                            name={field.name}
+                            render={({ field: formField }) => (
                                 <FormItem>
-                                    <FormLabel>{label}</FormLabel>
+                                    <FormLabel>{field.label}</FormLabel>
                                     <FormControl>
-                                        <Input type={type} placeholder={label} {...field} />
+                                        <Input
+                                            {...formField}
+                                            type={field.type || 'text'}
+                                            placeholder={field.label}
+                                            onChange={e => {
+                                                formField.onChange(
+                                                    field.type === 'number' ? Number(e.target.value) : e.target.value,
+                                                )
+                                            }}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                     ))}
-                <InteractiveHoverButton className='w-full' type='submit' disabled={isLoading}>
-                    {isLoading ? 'Отправка...' : 'Разместить'}
-                </InteractiveHoverButton>
-            </form>
-        </FormShadcn>
+                    <div className='flex gap-4'>
+                        <Button type='submit' disabled={isLoading}>
+                            {itemId ? 'Сохранить' : 'Создать'}
+                        </Button>
+                        <Button type='button' variant='secondary' onClick={handleCancel}>
+                            Отмена
+                        </Button>
+                    </div>
+                </form>
+            </FormShadcn>
+        </section>
     )
 }
 

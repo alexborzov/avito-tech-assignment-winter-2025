@@ -1,7 +1,7 @@
-import { cn } from '~/shared/lib/utils'
-import { Button } from '~/shared/ui'
 import { Link } from '@remix-run/react'
 import type { FormSchema as TFormSchema } from '~/shared/api'
+import { cn } from '~/shared/lib/utils'
+import { Button } from '~/shared/ui'
 
 const Notification = (props: TFormSchema & { color: string; to: string }) => {
     return (
@@ -20,7 +20,7 @@ const Notification = (props: TFormSchema & { color: string; to: string }) => {
                         backgroundColor: props.color,
                     }}
                 >
-                    <span className='text-lg'>{props.photo}</span>
+                    <span className='text-lg'>{props.name[0]}</span>
                 </div>
                 <div className='flex flex-col overflow-hidden'>
                     <figcaption className='flex flex-row items-center whitespace-pre text-lg font-medium dark:text-white '>
