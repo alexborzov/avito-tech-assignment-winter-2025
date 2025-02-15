@@ -1,34 +1,3 @@
-// import type { ActionFunctionArgs } from '@remix-run/node'
-// import { json } from '@remix-run/node'
-// import { FormSchema } from '~/components/form/model'
-// import { Form } from '~/components/form/ui'
-
-// export const action = async ({ request }: ActionFunctionArgs) => {
-//     const formData = Object.fromEntries(await request.formData())
-
-//     const parsedData = {
-//         ...formData,
-//         image: Object(formData.image),
-//         area: Number(formData.area),
-//         rooms: Number(formData.rooms),
-//         price: Number(formData.price),
-//         year: Number(formData.year),
-//         mileage: formData.mileage ? Number(formData.mileage) : undefined,
-//         experience: Number(formData.experience),
-//         cost: Number(formData.cost),
-//     }
-
-//     const result = FormSchema.safeParse(parsedData)
-
-//     if (!result.success) return json({ errors: result.error.flatten().fieldErrors }, { status: 400 })
-
-//     return json({ success: true, data: result.data })
-// }
-
-// export default function FormRoute() {
-//     return <Form />
-// }
-
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query'

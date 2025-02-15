@@ -25,7 +25,7 @@ const List = () => {
             <div className='relative flex h-[500px] w-full flex-col justify-start overflow-hidden p-2'>
                 {items?.length ? (
                     <AnimatedList delay={500}>
-                        {items.map((item, idx) => (
+                        {items.map(item => (
                             <Notification to={`/item/${item.id}`} color='#00C9A7' {...item} key={item.id} />
                         ))}
                     </AnimatedList>

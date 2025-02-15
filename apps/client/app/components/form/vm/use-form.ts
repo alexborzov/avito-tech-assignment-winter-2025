@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@remix-run/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { type SubmitHandler, useForm as useReactHookForm } from 'react-hook-form'
 import { FormSchema, type TFormSchema, getDefaultValues, setFormValues } from '../model'
 import { useGetItemById } from './use-get-item-by-id'
@@ -29,7 +29,7 @@ const useForm = ({ itemId }: IUseFormProps = {}) => {
         const currentType = form.getValues('type') as TFormSchema['type']
         form.reset({
             ...getDefaultValues(watchType, itemId),
-            // @ts-ignore react-hook-form does not allow to change type
+            // @ts-ignore react-hook-form
             type: currentType,
         })
     }, [watchType, itemId, form])
