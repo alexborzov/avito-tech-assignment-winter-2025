@@ -20,5 +20,16 @@
     "model": "Camry",
     "year": 2020,
     "mileage": 15000
+  },
+  {
+    "id": "_pyQjK1xxS-1m8n4bhXoQ",
+    "name": "авто",
+    "description": "авто",
+    "location": "авто",
+    "type": "AUTO",
+    "brand": "авто",
+    "model": "авто",
+    "year": 2025,
+    "mileage": 10
   }
 ]
