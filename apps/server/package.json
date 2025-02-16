@@ -19,7 +19,7 @@
         "test": "vitest",
         "watch:ts": "tsc -w",
         "dev": "concurrently -k -p \"[{name}]\" -n TS,SERVER -c yellow.bold,cyan.bold \"yarn:watch:ts\" \"yarn:dev:start\"",
-        "dev:start": "fastify start --ignore-watch='.ts$' -w -l info -P dist/index.js",
+        "dev:start": "fastify start --ignore-watch='.ts$' -w -l info -P -p 8000 dist/index.js",
         "build:clean": "rimraf dist",
         "format:write": "biome format --write",
         "lint:write": "biome lint --write",

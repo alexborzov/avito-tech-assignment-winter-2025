@@ -17,7 +17,7 @@ services:
       dockerfile: apps/client/Dockerfile
     working_dir: /app/apps/client
     ports:
-      - "3001:3000"
+      - "4000:4000"
     environment:
       - NODE_ENV=production
     restart: always

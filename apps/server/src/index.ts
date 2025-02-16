@@ -1,8 +1,8 @@
-import type { FastifyPluginAsync } from 'fastify'
-import AutoLoad, { type AutoloadPluginOptions } from '@fastify/autoload'
-import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import AutoLoad, { type AutoloadPluginOptions } from '@fastify/autoload'
+import type { FastifyPluginAsync } from 'fastify'
+import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 
 export type AppOptions = {} & Partial<AutoloadPluginOptions>
 
@@ -31,9 +31,9 @@ const Bootstrap: FastifyPluginAsync = async (fastify, _options) => {
             ..._options,
         })
 
-        fastify.log.info(`🚀 Server listening on 3000`)
+        fastify.log.info('🚀 Server listening on 3000')
 
-        fastify.log.info(`📄 Documentation running at http://localhost:3000/documentation`)
+        fastify.log.info('📄 Documentation running at http://localhost:3000/documentation')
     } catch (error) {
         if (error instanceof Error) {
             fastify.log.error(error)

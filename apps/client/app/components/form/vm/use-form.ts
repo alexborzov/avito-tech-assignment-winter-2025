@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@remix-run/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { type SubmitHandler, useForm as useReactHookForm } from 'react-hook-form'
 import { FormSchema, type TFormSchema, getDefaultValues, setFormValues } from '../model'
 import { useGetItemById } from './use-get-item-by-id'

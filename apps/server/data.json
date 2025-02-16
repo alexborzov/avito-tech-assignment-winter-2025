@@ -1,35 +1,24 @@
 [
-    {
-        "id": "4SckkIyuIcotpeEOwTcNF",
-        "name": "Квартира в центре",
-        "description": "Просторная квартира в центре города",
-        "location": "Москва",
-        "type": "REAL_ESTATE",
-        "propertyType": "Квартира",
-        "area": 100,
-        "rooms": 3,
-        "price": 15000000
-    },
-    {
-        "id": "SIYiaH1penVV95tDL9fXg",
-        "name": "Toyota Camry",
-        "description": "Надежный автомобиль",
-        "location": "Москва",
-        "type": "AUTO",
-        "brand": "Toyota",
-        "model": "Camry",
-        "year": 2020,
-        "mileage": 15000
-    },
-    {
-        "id": "4JLkoIfDf1t-v3_vhCrBa",
-        "name": "Ремонт квартир",
-        "description": "Качественный ремонт квартир",
-        "location": "Москва",
-        "type": "SERVICES",
-        "serviceType": "Ремонт",
-        "experience": 5,
-        "cost": 50000,
-        "workSchedule": "Пн-Пт, 9:00-18:00"
-    }
+  {
+    "id": "4SckkIyuIcotpeEOwTcNF",
+    "name": "Квартира в центре",
+    "description": "Просторная квартира в центре города",
+    "location": "Москва",
+    "type": "REAL_ESTATE",
+    "propertyType": "Квартира",
+    "area": 100,
+    "rooms": 3,
+    "price": 15000000
+  },
+  {
+    "id": "SIYiaH1penVV95tDL9fXg",
+    "name": "Toyota Camry",
+    "description": "Надежный автомобиль",
+    "location": "Москва",
+    "type": "AUTO",
+    "brand": "Toyota",
+    "model": "Camry",
+    "year": 2020,
+    "mileage": 15000
+  }
 ]
